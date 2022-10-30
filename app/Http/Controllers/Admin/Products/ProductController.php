@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Products;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct(private Product $product)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = $this->product->paginate(10);
+
+        return view('admin.products.index', compact('products'));
     }
 
     /**
