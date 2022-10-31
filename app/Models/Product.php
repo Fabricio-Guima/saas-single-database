@@ -21,8 +21,22 @@ class Product extends Model
         $this->attributes['slug'] = Str::slug($prop);
     }
 
+    //transforma decimal para inteiro e salvar
+    public function setPriceAttribute($prop)
+    {
+        $price = str_replace(['.', ','], ['', '.'], $prop);
+        $this->attributes['price'] = $price * 100;
+    }
+
+    //enviar numero formatado para o front
+    public function getPriceAttribute()
+    {
+        return $this->attributes['price'] / 100;
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
+
 }

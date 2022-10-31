@@ -22,8 +22,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    dump(Store::first());
-
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
