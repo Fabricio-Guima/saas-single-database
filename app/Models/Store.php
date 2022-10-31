@@ -13,4 +13,14 @@ class Store extends Model
     // para filtrar as store do user logado
     use HasFactory, BelongsTenantScope;
 
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
 }

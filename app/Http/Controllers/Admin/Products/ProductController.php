@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Products;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\{Product, Category, Store};
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -29,9 +29,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Category $category)
     {
-        //
+        $categories = $category->all('id', 'name');
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -40,9 +41,17 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Store $store)
     {
-        //
+        $data = $request->all();
+
+        $product = $store->first()->products()->create($data);
+
+        // $product->categories()->sync($request->categories);
+
+        session()->flash('message', ['type' => 'success', 'body' => 'Sucesso ao cadastrar produto']);
+
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -62,9 +71,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Category $category)
     {
-        //
+        $categories = $category->all('id', 'name');
+        $product = $this->product->findOrFail($id);
+        return view('admin.products.create', compact('product','categories'));
     }
 
     /**
@@ -76,7 +87,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = $this->product->findOrFail($id);
+        $product->update($request->all());
+
+        $product->categories()->sync($request->categories);
+
+        session()->flash('message', ['type' => 'success', 'body' => 'Sucesso ao atualizar produto']);
+
+        return redirect()->route('admin.products.edit', $product);
     }
 
     /**
@@ -87,6 +105,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = $this->product->findOrFail($id);
+
+        $product->delete();
+
+        session()->flash('message', ['type' => 'success', 'body' => 'Sucesso ao remover produto']);
+
+        return redirect()->route('admin.products.index');
     }
 }

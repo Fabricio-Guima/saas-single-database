@@ -11,5 +11,10 @@ trait BelongsTenantScope
     protected static function booted()
     {
         static::addGlobalScope(new TenantScope());
+
+        //quando o model criar um registro, crie este campo e com o valor de session->tenant do user logado
+        static::creating(function($model) {
+            $model->tenant_id = session()->get('tenant');
+        });
     }
 }

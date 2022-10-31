@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Categories\CategoryController;
 use App\Http\Controllers\Admin\Products\ProductController;
+
 use App\Models\Store;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,9 @@ Route::get('/dashboard', function () {
 
 Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
 });
+
+
 
 require __DIR__.'/auth.php';
