@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
                     ->create();
 
         //remover o escopo para
+        //desligue o BelongsTenantScope, comente a linha 17 e rode sua seed
         foreach(Store::withoutGlobalScope(TenantScope::class)->get() as $store) {
 
             $tenantAndStoreIds = ['store_id' => $store->id, 'tenant_id' => $store->tenant_id];

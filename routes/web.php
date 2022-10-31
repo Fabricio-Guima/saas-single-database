@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\Categories\CategoryController;
 use App\Http\Controllers\Admin\Products\ProductController;
-
+use App\Http\Controllers\Front\StoreController;
 use App\Models\Store;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//subdomains routes stores
+Route::domain('{subdomain}.localhost')->group(function(){
+    Route::get('/', [StoreController::class, 'index'])->name('front.store');
+});
 
 Route::get('/', function () {
     return view('welcome');

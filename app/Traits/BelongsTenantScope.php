@@ -14,7 +14,7 @@ trait BelongsTenantScope
 
         //quando o model criar um registro, crie este campo e com o valor de session->tenant do user logado
         static::creating(function($model) {
-            // $model->tenant_id = session()->get('tenant');
+            $model->tenant_id = session()->get('tenant');
         });
     }
 }
